@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { authContext } from '../Context/Context';
+import { AlertModal } from './AlertModal';
 import { Input } from './Input';
 import { SingleTask } from './SingleTask';
 
 export const Reminder = () => {
   const [showAlert, setShowAlert] = useState(false);
-  const { userstate,taskArr } = useContext(authContext)
+  const { userstate, taskArr } = useContext(authContext)
   const reminderFunc = (hour, min, status) => {
     const now = new Date();
     const alertTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, min, 0);
@@ -28,7 +29,7 @@ export const Reminder = () => {
       const hours = now.getHours();
       const minutes = now.getMinutes();
 
-      if (hours === 20 && minutes === 27) {
+      if (hours === Number(userstate.reminder.split(':')[0]) && minutes === Number(userstate.reminder.split(':')[1])) {
         callmyfunction();
         clearInterval(interval);
       }
@@ -46,10 +47,11 @@ export const Reminder = () => {
       <h1>
         Change reminder time
       </h1>
+      <AlertModal />
       <p>Alert will show at  {userstate.reminder} AM EveryDay </p>
       <ul>
         {
-          taskArr.map((el,i) => <SingleTask key={i}  props={el} />)
+          taskArr.map((el, i) => <SingleTask key={i} props={el} />)
         }
       </ul>
       <Input />

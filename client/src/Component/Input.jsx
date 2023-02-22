@@ -19,7 +19,7 @@ export const Input = () => {
       }
     })
     const data=await res.json();
-    console.log(data);
+   
     setTaskArray([...taskArr,task]);
     
     }catch(e){

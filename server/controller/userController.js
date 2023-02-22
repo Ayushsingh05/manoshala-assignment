@@ -155,7 +155,7 @@ const updateReminder=async(data,id)=>{
           id,
           { reminder:data },
         ).select("-password");
-    return({"message":"toggle updated successfully","data":user})
+    return({"message":"Reminder updated successfully","data":user})
 }catch(e){
     return({"message":e.message})
 }  

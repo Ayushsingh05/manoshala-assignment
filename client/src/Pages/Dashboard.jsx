@@ -6,7 +6,7 @@ import { authContext } from '../Context/Context';
 export const Dashboard = () => {
   const cookies= new Cookies;
   const token =cookies.get('jwt');
-  const {userstate,setUserState} =useContext(authContext);
+  const {userstate,setUserState,setTaskArray} =useContext(authContext);
   const fetchDetails =async()=>{
        
     try{
@@ -18,13 +18,12 @@ export const Dashboard = () => {
           }
       })
       const data= await res.json();
+      setTaskArray(data.user.tasks);
       setUserState(data.user);
     }catch(e){
       console.log(e);
     }
   }
-
-   console.log(userstate);
     const handleClick=async()=>{
       let temp;
       if(userstate&&userstate.toggle){

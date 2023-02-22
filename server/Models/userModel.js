@@ -23,21 +23,13 @@ const userSchema = mongoose.Schema({
             default:"8:00"
         }
         ,
-        tasks:{
-            type:Array,
-            default:[ {
-                "time": "03:11",
-                "status": "UPCOMING"
-              },
-               {
-                "time": "15:05",
-                "status": "MONTHLY"
-              },
-              {
-                "time": "23:05",
-                "status": "COLD"
-              }]
+        tasks:[{
+
+            time:String,
+            status:String
         }
+
+        ]
 })
 
 const userModel= mongoose.model('users',userSchema);

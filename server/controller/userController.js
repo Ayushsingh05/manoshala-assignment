@@ -104,13 +104,12 @@ const loggedInUser = async (data)=>{
 }
 
 const handleToggle=async(data,id)=>{
-    console.log(data,"data");
         try {
             const user = await userModel.findByIdAndUpdate(
               id,
               { toggle:data },
           
-            );
+            ).select("-password");
    return({"message":"toggle updated successfully","data":user})
     }catch(e){
         return({"message":e.message})
@@ -118,15 +117,57 @@ const handleToggle=async(data,id)=>{
 
 }
 
-const updateTime=async(req,res)=>{
-    
+const updatetasks=async(data,id)=>{
+    try{
+        const user= await userModel.findByIdAndUpdate(id,
+            {$push:{tasks:data} },
+            {new:true}
+            )
+
+          return {
+            "status":"success",
+            "data":user
+          }
+    }catch(e){
+        return {
+            "status":"failed",
+            "data":e.message
+          }
+    }
+}
+const deleteTasks=async(deleteID,id)=>{
+    try{
+        const user= await userModel.findByIdAndUpdate(id, { $pull: { tasks: { _id: deleteID } } })
+          return {
+            "status":"success",
+            "data":user
+          }
+    }catch(e){
+        return {
+            "status":"failed",
+            "data":e.message
+          }
+    }
+}
+const updateReminder=async(data,id)=>{
+    try {
+        const user = await userModel.findByIdAndUpdate(
+          id,
+          { reminder:data },
+        ).select("-password");
+    return({"message":"toggle updated successfully","data":user})
+}catch(e){
+    return({"message":e.message})
+}  
 }
 module.exports={
     userLogin,
     userRegister,
     loggedInUser,
     handleToggle,
-    updateTime
+    updatetasks,
+    deleteTasks,
+    updateReminder
 }
 
  

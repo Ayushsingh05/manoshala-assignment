@@ -6,9 +6,10 @@ export const authContext=createContext();
 
 export const Context = () => {
     const [userstate,setUserState]=useState({});
-   const [loggedIn,setLoggenIn]=useState(false);
+   const [loggedIn,setLoggedIn]=useState(false);
+   const [taskArr,setTaskArray,]=useState([]);
   return (
-    <authContext.Provider value={{userstate,setUserState,loggedIn,setLoggenIn}} >
+    <authContext.Provider value={{userstate,setUserState,loggedIn,setLoggedIn,taskArr,setTaskArray}} >
 <App/>
     </authContext.Provider>
   )

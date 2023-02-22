@@ -1,5 +1,5 @@
 const express= require('express');
-const { userLogin, userRegister, loggedInUser, handleToggle } = require('../controller/userController');
+const { userLogin, userRegister, loggedInUser, handleToggle, updatetasks, deleteTasks, updateReminder } = require('../controller/userController');
 const userauthenticate = require('../middleware/auth.middleware');
 const routes= express.Router();
 
@@ -35,6 +35,27 @@ routes.put('/toggle/:id',async(req,res)=>{
     const result= await handleToggle(data,id);
     res.send(result)
 });
+
+routes.put('/update/:id',async(req,res)=>{
+    const {data}=req.body;
+    const {id}=req.params;
+    const result= await updatetasks(data,id);
+    res.send(result)
+})
+
+routes.put('/delete/:id',async(req,res)=>{
+    const {deleteID}=req.body;
+    const {id}=req.params;
+    const result= await deleteTasks(deleteID,id);
+    res.send(result);
+})
+
+routes.put('/reminder/:id',async(req,res)=>{
+    const {data}=req.body;
+    const {id}=req.params;
+    const result = await updateReminder(data,id);
+    res.send(result);
+})
 
 
 module.exports=routes;

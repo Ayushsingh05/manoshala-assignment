@@ -9,14 +9,14 @@ import {PrivateRoutes}  from '../PrivateRoute/PrivateRoutes'
 
 export const AllRoutes = () => {
   const cookies =new Cookies();
-  const {loggedIn,setLoggenIn,setUserState}=useContext(authContext);
+  const {loggedIn,setLoggedIn}=useContext(authContext);
  
   const token =cookies.get('jwt')
   
   useEffect(()=>{
     if(token){
       
-      setLoggenIn(true)
+      setLoggedIn(true)
     }
   },[])
   return (

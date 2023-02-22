@@ -4,7 +4,7 @@ import { authContext } from './../Context/Context';
 import Cookies from 'universal-cookie'
 export const Login = () => {
     const cookies = new Cookies();
-    const {setLoggenIn,setUserState}=useContext(authContext)
+    const {setLoggedIn,setUserState,setTaskArray}=useContext(authContext)
     const obj={
         email:"",
         password:"",
@@ -24,6 +24,7 @@ export const Login = () => {
           })
           const data= await res.json();
           console.log(data);
+          setTaskArray(data.user.tasks);
           setUserState(data.user);
         }catch(e){
           console.log(e);
@@ -45,7 +46,7 @@ export const Login = () => {
          });
          const data = await res.json();
         if(data.status=="success"){
-            setLoggenIn(true);
+            setLoggedIn(true);
             cookies.set('jwt' , data.token , {
                 maxAge:24 * 60 * 60 * 60,
                 path: '/'

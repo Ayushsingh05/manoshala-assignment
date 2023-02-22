@@ -7,8 +7,11 @@ const routes = require('./routes/userRoutes');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors({
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
+}));
 
+app.use(express.json())
 app.use('/',routes)
 connect().then(res=>{
   console.log("connected to database");

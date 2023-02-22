@@ -1,12 +1,19 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { authContext } from '../Context/Context'
+import { Dashboard } from '../Pages/Dashboard';
 
-export const PrivateRoutes = ({child}) => {
+export const  PrivateRoutes = () => {
  const {loggedIn}=useContext(authContext);
  const navigate=useNavigate();
- if(loggedIn){
-    return child;
- }
- navigate('/login');
+ useEffect(()=>{
+     if(!loggedIn){
+        navigate('/login');
+     
+     }
+    
+ },[])
+ return(
+    <Dashboard/>
+ )
 }

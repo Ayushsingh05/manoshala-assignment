@@ -3,82 +3,127 @@ const userModel= require('../Models/userModel');
 const jwt= require('jsonwebtoken');
 const bcrypt= require('bcrypt');
 
-const register=async(req,res)=>{
-    const {name,email,password}=req.body;
-    if(!name || !email || !password ){
-     res.status(404).send("field is required");
+const userRegister = async (data)=>{
+    //   return data
+    const user =await userModel.findOne({email:data.email});
+    console.log(data.email);
+    if(user){
+        return {
+            "status": "failed",
+            "message": 'Email already exists'
+        }
     }
     else{
-        const existingUser= await userModel.findOne({email:email});
-        if(existingUser){
-            res.status(404).send("user already exists");
-        }
-        else{
-            const hashpassword = bcrypt.hash(password,10);
-            const user= new userModel({
-                name:name,
-                password:hashpassword,
-                email:email,
-            })
-            const createdUser= await userModel.create(user);
+        if(data.name && data.email && data.password ){
+            try{
+                const salt = await bcrypt.genSalt(10);
+                const hashPassword = await bcrypt.hash(data.password, salt);
+                const newUser= new userModel({
+                    name: data.name,
+                    email: data.email,
+                    password:hashPassword,
+                    
+                   })
+                 const temp=  await userModel.create(newUser);
+                 console.log(temp);
+                 const registeredUser= userModel.findOne({email:data.email})
+                 
+                //  Generate JWT token
 
-            res.status(200).send({"message":"user registered successfully", data:createdUser});
+                const token  = jwt.sign({userId:registeredUser._id},"secret")
+                 
+                 return {
+                    "status": "success",
+                    "message": 'User Registered Successfully',
+                    "token": token
+                }
+            }catch(e){
+                return {
+                    "status": "failed",
+                    "message": e.message
+                }
+            }
+          
+        }else{
+            return {
+                "status": "failed",
+                "message": 'All fields are required'
+            }
         }
-    }
+    
+}
 }
 
-const login=async(req,res)=>{
-    const {email,password} = req.body;
+const userLogin =async(data)=>{
     try{
-        const userExist=await userModel.findOne({email:email});
-        if(userExist){
-            const temp=await bcrypt.compare(password,userExist.password);
-            if(temp){
-                const token=  jwt.sign({id:userExist.id},"secret");
-                res.status(200).send({
-                    "message":"user logged in successfully",
-                    "token":token,
-                    "data":userExist
-            })
-            }
-            else{
-                res.status(404).send("email or password in incorrect");
+ const {email,password}=data;
+ if(email && password){
+    const user = await userModel.findOne({ email: email});
+    const token  = jwt.sign({userId:user._id},"secret")
+    if(user !=null){
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(isMatch && (user.email === email)){
+            return {
+                "status": "success",
+                "message": 'Login Successfull',
+                "token": token
             }
         }else{
-            res.status(404).send("user not registered")
+            return {
+                "status": "failed",
+                "message": 'Email or password is incorrect',
+            }
         }
-    }catch(e){
+    }else{
+        return {
+            "status": "failed",
+            "message": 'User is not Registered',
+        }
 
+    }
+ }else{
+    return {
+        "status": "failed",
+        "message": 'All fields are required'
+    }
+ }
+    }catch(e){
+        return {
+            "status": "failed",
+            "message": 'User is not Registered',
+
+        }
     }
 }
 
-const loggedInUser=async(req,res)=>{
-    try{
-        res.status(200).send(req.user)
-    }catch(e){
-        res.status(404).send("user not exist");
-    }
 
+const loggedInUser = async (data)=>{
+ return {
+    "user":data
+ }
 }
 
-const handleToggle=async(req,res)=>{
-    const {_id}=req.user;
-    try{
-        const temp= userModel.findByIdAndUpdate(_id,{
-            toggle:req.body
-        }).select("-password");
-        res.status(200).send({"message":"toggle updated successfully","data":temp})
+const handleToggle=async(data,id)=>{
+    console.log(data,"data");
+        try {
+            const user = await userModel.findByIdAndUpdate(
+              id,
+              { toggle:data },
+          
+            );
+   return({"message":"toggle updated successfully","data":user})
     }catch(e){
-        res.status(404).send({"message":e.message})
+        return({"message":e.message})
     }
+
 }
 
 const updateTime=async(req,res)=>{
     
 }
 module.exports={
-    login,
-    register,
+    userLogin,
+    userRegister,
     loggedInUser,
     handleToggle,
     updateTime

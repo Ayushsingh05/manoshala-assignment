@@ -69,6 +69,9 @@ export const Login = () => {
         }, 500);
         navigate("/");
       }
+      else{
+        alert(data.message);
+      }
     } catch (e) {
       console.log(e);
     }

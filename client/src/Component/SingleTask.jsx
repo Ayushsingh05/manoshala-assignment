@@ -10,7 +10,7 @@ export const SingleTask = ({props}) => {
     }
     const handleDelete=async()=>{
         try{
-            const res=await fetch(`http://localhost:8080/delete/${userstate._id}`,{
+            const res=await fetch(`https://timer-backend.vercel.app/delete/${userstate._id}`,{
             method:"PUT",
             body: JSON.stringify({deleteID:props._id}) ,
             headers:{

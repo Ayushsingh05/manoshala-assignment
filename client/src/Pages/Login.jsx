@@ -28,7 +28,7 @@ export const Login = () => {
   const fetchDetails = async () => {
 
     try {
-      const res = await fetch(`http://localhost:8080/loggedInUser`, {
+      const res = await fetch(`https://timer-backend.vercel.app/loggedInUser`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export const Login = () => {
     e.preventDefault();
     console.log(state);
     try {
-      const res = await fetch(`http://localhost:8080/login`, {
+      const res = await fetch(`https://timer-backend.vercel.app/login`, {
         method: "POST",
         body: JSON.stringify(state),
         headers: {

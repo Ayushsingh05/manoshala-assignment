@@ -13,7 +13,7 @@ export const Dashboard = () => {
   const fetchDetails =async()=>{
        
     try{
-      const res=await fetch(`http://localhost:8080/loggedInUser`,{
+      const res=await fetch(`https://timer-backend.vercel.app/loggedInUser`,{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export const Dashboard = () => {
       }
      
       try{
-        const res=await fetch(`http://localhost:8080/toggle/${userstate._id}`,{
+        const res=await fetch(`https://timer-backend.vercel.app/toggle/${userstate._id}`,{
         method:"PUT",
         body: JSON.stringify({data:temp}) ,
         headers:{

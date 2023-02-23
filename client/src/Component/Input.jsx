@@ -19,7 +19,7 @@ export const SetInput = ({props}) => {
   const handleSubmit=async(e)=>{
     e.preventDefault();
     try{
-      const res=await fetch(`http://localhost:8080/update/${userstate._id}`,{
+      const res=await fetch(`https://timer-backend.vercel.app/update/${userstate._id}`,{
       method:"PUT",
       body: JSON.stringify({data:task}) ,
       headers:{

@@ -14,7 +14,7 @@ export const AlertModal = ({props}) => {
     const {setUserState,userstate}=useContext(authContext);
     const handleClick=async()=>{
         try{
-            const res=await fetch(`http://localhost:8080/reminder/${userstate._id}`,{
+            const res=await fetch(`https://timer-backend.vercel.app/reminder/${userstate._id}`,{
         method:"PUT",
         body: JSON.stringify({data:state}) ,
         headers:{

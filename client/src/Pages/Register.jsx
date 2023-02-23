@@ -32,7 +32,7 @@ export const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`http://localhost:8080/register`, {
+            const res = await fetch(`https://timer-backend.vercel.app/register`, {
                 method: "POST",
                 body: JSON.stringify(state),
                 headers: {

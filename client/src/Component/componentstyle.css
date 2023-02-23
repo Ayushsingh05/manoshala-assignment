@@ -1,0 +1,37 @@
+/* Navbar */
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar-links {
+    display: flex;
+  }
+  
+  .navbar-link {
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .navbar-link:hover {
+    color: #eee;
+  }
+  
+  .active {
+    color: #eee;
+  }
+  
+/* Navbar */

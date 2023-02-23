@@ -5,7 +5,7 @@ import { authContext } from '../Context/Context'
 import { Dashboard } from '../Pages/Dashboard'
 import { Login } from '../Pages/Login'
 import { Register } from '../Pages/Register'
-import {PrivateRoutes}  from '../PrivateRoute/PrivateRoutes'
+import { Tasks } from './../Pages/Tasks';
 
 export const AllRoutes = () => {
   const cookies =new Cookies();
@@ -24,6 +24,8 @@ export const AllRoutes = () => {
     <Route path='/' element={loggedIn?<Dashboard/>:<Login/> } />
     <Route path='/login' element={<Login/>} />
     <Route path='/register' element={<Register/>}/>
+    <Route path='/tasks' element={<Tasks/>} />
+    
    </Routes>
   )
 }

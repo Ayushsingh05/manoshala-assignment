@@ -1,6 +1,7 @@
+import { Box, Button, Text } from '@chakra-ui/react';
 import React, { useContext } from 'react'
 import { authContext } from '../Context/Context'
-
+import {MdDeleteForever,MdDelete} from 'react-icons/md'
 export const SingleTask = ({props}) => {
     const {setTaskArray,taskArr,userstate} =useContext(authContext);
     const updateTaskArray=()=>{
@@ -25,9 +26,9 @@ export const SingleTask = ({props}) => {
           }
     }
   return (
-    <div>
-        <p>Time:{props.time} Status:{props.status}</p>
-        <button onClick={handleDelete} >Delete</button>
-    </div>
+    <Box display="flex" gap={"20px"} alignItems="center" mt="20px" padding={"15px"} textAlign={"center"} m={"auto"} borderBottom="1px solid #ccc"   width={"max-content"}>
+        <Text fontSize={"20px"}>Time: <span style={{color:"blue",fontWeight:"bold"}}>{props.time}</span> Status: <span style={{color:"blue", fontWeight:"bold"}}>{props.status}</span></Text>
+        <Button  colorScheme={"red"} onClick={handleDelete} ><MdDelete/></Button>
+    </Box>
   )
 }

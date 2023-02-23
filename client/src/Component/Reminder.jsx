@@ -1,12 +1,40 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { authContext } from '../Context/Context';
 import { AlertModal } from './AlertModal';
-import { Input } from './Input';
-import { SingleTask } from './SingleTask';
-
+import { SetInput } from './Input';
+import {RxLapTimer} from 'react-icons/rx'
+import {BiTask} from 'react-icons/bi'
+import {
+  Modal,
+  useDisclosure,
+  Button,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  Box,
+  Text,
+} from '@chakra-ui/react'
 export const Reminder = () => {
-  const [showAlert, setShowAlert] = useState(false);
-  const { userstate, taskArr } = useContext(authContext)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { userstate, taskArr } = useContext(authContext);
+  const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
+  const [isTasksModalOpen, setIsTasksModalOpen] = useState(false);
+
+  const openReminderModal = () => {
+    setIsReminderModalOpen(true);
+  }
+
+  const closeReminderModal = () => {
+    setIsReminderModalOpen(false);
+  }
+
+  const openTasksModal = () => {
+    setIsTasksModalOpen(true);
+  }
+
+  const closeTasksModal = () => {
+    setIsTasksModalOpen(false);
+  }
   const reminderFunc = (hour, min, status) => {
     const now = new Date();
     const alertTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, min, 0);
@@ -19,9 +47,13 @@ export const Reminder = () => {
   }
   const callmyfunction = () => {
 
-    userstate.tasks.map(el => reminderFunc(Number(el.time.split(':')[0]), Number(el.time.split(':')[1]), el.status))
+    taskArr.map(el => reminderFunc(Number(el.time.split(':')[0]), Number(el.time.split(':')[1]), el.status))
 
   }
+
+  useEffect(() => {
+    callmyfunction();
+  }, [taskArr]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,33 +61,37 @@ export const Reminder = () => {
       const hours = now.getHours();
       const minutes = now.getMinutes();
 
-      if (hours === Number(userstate.reminder.split(':')[0]) && minutes === Number(userstate.reminder.split(':')[1])) {
+      if (hours === Number(userstate.reminder.split(':')[0]) && minutes ===Number(userstate.reminder.split(':')[1])) {
         callmyfunction();
+        alert("Reminder Alert")
         clearInterval(interval);
       }
     }, 60000);
+    
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [userstate]);
+  
   return (
-    <div className="container">
-      <h1>My App</h1>
-      <div className="alert-wrapper">
-        {showAlert && <div className="alert">Time to show the alert!</div>}
-      </div>
-      <h1>
-        Change reminder time
-      </h1>
-      <AlertModal />
-      <p>Alert will show at  {userstate.reminder} AM EveryDay </p>
-      <ul>
-        {
-          taskArr.map((el, i) => <SingleTask key={i} props={el} />)
-        }
-      </ul>
-      <Input />
+    <Box ml={"36%"}  className="container">
+      <Text color={"green"} fontWeight="bold" mb={"2%"} width="max-content" borderBottom="1px solid #ccc" >Alert will show at  {Number(userstate.reminder.split(':')[0])}:{Number(userstate.reminder.split(':')[1])}  EveryDay </Text>
+      <Button onClick={openReminderModal} ml={"-3%"}  leftIcon={<RxLapTimer/>} >Set Reminder</Button>
+      <Button onClick={openTasksModal} ml="2%" leftIcon={<BiTask/>} >Set Tasks</Button>
 
-    </div>
+      <Modal isOpen={isReminderModalOpen} onClose={closeReminderModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <AlertModal props={closeReminderModal} />
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isTasksModalOpen} onClose={closeTasksModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <SetInput props={closeTasksModal} />
+        </ModalContent>
+      </Modal>
+    </Box>
   )
 }

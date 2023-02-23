@@ -3,6 +3,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import Cookies from 'universal-cookie';
 import { Reminder } from '../Component/Reminder';
 import { authContext } from '../Context/Context';
+import '../Component/componentstyle.css'
+import { Navbar } from '../Component/Navbar';
+import { Button } from '@chakra-ui/react';
 export const Dashboard = () => {
   const cookies= new Cookies;
   const token =cookies.get('jwt');
@@ -52,10 +55,11 @@ export const Dashboard = () => {
     },[])
       return (
         <div>
-          <button onClick={handleClick}>
+          <Navbar/>
+          <Button ml={'45%'} mt="10%" mb="2%" colorScheme={userstate && userstate ? userstate.toggle ?"red":"whatsapp" :null} onClick={handleClick}>
           {userstate && userstate ? userstate.toggle ? " Off":"Set Reminder" :null}
          
-          </button>
+          </Button>
           {userstate && userstate ?
         userstate.toggle?  <Reminder/> : null : null
 
